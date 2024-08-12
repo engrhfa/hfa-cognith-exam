@@ -7,12 +7,18 @@ const fetchPokemonList = (limit, offset) => {
   return dataResp;
 };
 
-const fetchPokemonDetails = (url) => {
+const fetchPokemonDetailsByUrl = (url) => {
   const dataResp = axios.get(url);
+  return dataResp;
+};
+
+const fetchPokemonDetailsById = (id) => {
+  const dataResp = axios.get(`${BASE_URL}pokemon/${id}`);
   return dataResp;
 };
 
 export {
     fetchPokemonList,
-    fetchPokemonDetails
+    fetchPokemonDetailsByUrl,
+    fetchPokemonDetailsById
 };
