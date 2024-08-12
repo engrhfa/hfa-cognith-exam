@@ -25,13 +25,14 @@ const Pokedex = () => {
         newOffset,
         search
       );
-      const newPokemon = response?.data?.results;
+      const newPokemon = response?.data?.results || null;
+      console.log("Fetched Pokémon:", newPokemon);
 
-      if (!newPokemon) {
+      if (response?.status === 404 || !newPokemon) {
         setPokedexList([]);
-      }
-
-      if (initialLoad || search) {
+        setHasMore(false); // No more Pokémon to load
+        return;
+      }else if (initialLoad || search) {
         setPokedexList(newPokemon); // Replace the list for new search or initial load
       } else {
         setPokedexList((prevList) => [...prevList, ...newPokemon]); // Append new results for infinite scroll
@@ -63,9 +64,8 @@ const Pokedex = () => {
     if (searchTerm !== "") {
       debouncedFetch(searchTerm);
     } else {
-      // If searchTerm is empty, load initial data
       fetchPokemonList("", 0, true);
-      setInitialLoad(false); // Ensure the initial load flag is reset
+      setInitialLoad(false); 
     }
   }, [searchTerm, debouncedFetch]);
 
@@ -80,7 +80,7 @@ const Pokedex = () => {
       ) {
         fetchPokemonList(searchTerm, offset);
       }
-    }, 200),
+    }, 350),
     [offset, loading, hasMore, searchTerm]
   );
 
@@ -152,10 +152,10 @@ const Pokedex = () => {
               sm={4} // 3 columns on small screens
               md={3} // 4 columns on medium screens
               lg={2} // 5 columns on large screens
-              key={index}
+              key={item.name}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <PokemonCard key={index} item={item} />
+              <PokemonCard item={item} />
             </Grid>
           ))
         ) : (

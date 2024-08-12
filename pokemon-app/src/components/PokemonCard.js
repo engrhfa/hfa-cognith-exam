@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import * as apiServices from "../utils/apiServices";
-import {
-  Card,
-  CardMedia,
-  CardActions,
-  Typography,
-  Chip,
-} from "@mui/material";
+import { Card, CardMedia, CardActions, Typography, Chip } from "@mui/material";
 import * as helper from "../utils/helper";
 
 const PokemonTypeChip = styled(Chip)(({ type }) => ({
@@ -25,14 +19,14 @@ const PokemonCard = (props) => {
   async function fetchPokemonData() {
     try {
       const pokemonDataResp = await apiServices.fetchPokemonDetailsByUrl(
-        props.item.url
+        props?.item?.url
       );
       setPokemonData({
-        id: pokemonDataResp.data.id,
-        name: pokemonDataResp.data.name,
-        types: pokemonDataResp.data.types.map((item) => item),
-        image: pokemonDataResp.data.sprites.front_default,
-        number: pokemonDataResp.data.order,
+        id: pokemonDataResp?.data?.id,
+        name: pokemonDataResp?.data?.name,
+        types: pokemonDataResp?.data?.types.map((item) => item),
+        image: pokemonDataResp?.data?.sprites?.front_default,
+        number: pokemonDataResp?.data?.order,
       });
     } catch (error) {
       console.error(error);
