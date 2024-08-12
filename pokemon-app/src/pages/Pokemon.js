@@ -1,14 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import * as apiServices from "../utils/apiServices";
 import {
+  Box,
+  Grid,
   Card,
   CardMedia,
   CardContent,
   Typography,
-  Grid,
-  Box,
+  Chip,
+  Tabs,
+  Tab,
+  Paper,
 } from "@mui/material";
+import { styled } from "@mui/system";
+import * as apiServices from "../utils/apiServices"; // Adjust the import based on your project structure
+
+const PokemonCard = styled(Card)({
+  backgroundColor: "#0f0f0f",
+  maxWidth: 300,
+});
+
+const PokemonCardMedia = styled(CardMedia)({
+  height: 300,
+  width: 300,
+  objectFit: "cover",
+});
+
+const PokemonHeader = styled(Box)({
+  position: "relative",
+});
+
+const PokemonTypeChip = styled(Chip)(({ type }) => ({
+  margin: "5px",
+  backgroundColor: getTypeColor(type),
+  fontWeight: 600
+}));
 
 const Pokemon = () => {
   const { id } = useParams();
@@ -29,22 +55,22 @@ const Pokemon = () => {
 
   const formatId = (id) => id?.toString().padStart(4, "0");
 
+  if (!pokemonData) return <Typography>Loading...</Typography>;
+
   return (
     <Grid container spacing={3} sx={{ padding: 3 }}>
       <Grid item xs={12} md={6}>
-        <Box
+        <PokemonHeader
           display="flex"
           justifyContent="center"
           alignItems="center"
           height="100%"
-          position="relative"
         >
-          <Card sx={{ backgroundColor: "#0f0f0f", maxWidth: 300 }}>
-            <CardMedia
+          <PokemonCard>
+            <PokemonCardMedia
               component="img"
               image={pokemonData?.sprites.front_default}
               alt={pokemonData?.name}
-              sx={{ height: 300, width: 300, objectFit: "cover" }}
             />
             <Box
               position="absolute"
@@ -52,51 +78,95 @@ const Pokemon = () => {
               left={8}
               bgcolor="rgba(0, 0, 0, 0.6)"
               color="#fff"
+              backgroundColor={"#323232"}
               p={1}
-              borderRadius={1}
+              borderRadius={5}
             >
               <Typography variant="subtitle1">
                 #{formatId(pokemonData?.id)}
               </Typography>
             </Box>
-          </Card>
-        </Box>
+            <Typography
+              variant="h4"
+              component="div"
+              gutterBottom
+              color="#fff"
+              align="center"
+            >
+              {pokemonData?.name?.toUpperCase()}
+            </Typography>
+          </PokemonCard>
+        </PokemonHeader>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Card sx={{ backgroundColor: "#1e1e1e", height: "100%" }}>
-          <CardContent>
-            <Typography variant="h4" component="div" gutterBottom>
-              {pokemonData?.name}
-            </Typography>
-            <Typography variant="h6" component="div" gutterBottom>
-              Abilities:
-            </Typography>
-            {pokemonData?.abilities.map((ability, index) => (
-              <Typography key={index} variant="body1" component="div">
-                {ability.ability.name}
+
+      <Grid item xs={12} md={6} sx={{ fontWeight: "400" }}>
+        <Paper sx={{ borderRadius: "10px" }}>
+          <Box p={2} backgroundColor="#1e1e1e" color="#fff">
+            <Box mb={2}>
+              <Typography variant="p" component="div">
+                POKEMON TYPE
               </Typography>
-            ))}
-            <Typography variant="h6" component="div" gutterBottom>
-              Types:
-            </Typography>
-            {pokemonData?.types.map((type, index) => (
-              <Typography key={index} variant="body1" component="div">
-                {type.type.name}
-              </Typography>
-            ))}
-            <Typography variant="h6" component="div" gutterBottom>
-              Stats:
-            </Typography>
+              {pokemonData?.types.map((type, index) => (
+                <PokemonTypeChip
+                  key={index}
+                  type={type.type.name.toUpperCase()}
+                  label={type.type.name.toUpperCase()}
+                />
+              ))}
+            </Box>
             {pokemonData?.stats.map((stat, index) => (
               <Typography key={index} variant="body1" component="div">
-                {stat.stat.name}: {stat.base_stat}
+                {stat.stat.name.toUpperCase()}: {stat.base_stat}
               </Typography>
             ))}
-          </CardContent>
-        </Card>
+            <br />
+            <Typography variant="p" component="div" gutterBottom>
+              ABILITIES:
+            </Typography>
+            {pokemonData?.abilities.map((ability, index) => (
+              <Typography
+                key={index}
+                variant="body1"
+                component="div"
+                sx={{
+                  border: "1px solid #fff",
+                  padding: "5px 10px",
+                  margin: "5px 0px",
+                }}
+              >
+                {ability.ability.name.toUpperCase()}
+              </Typography>
+            ))}
+          </Box>
+        </Paper>
       </Grid>
     </Grid>
   );
 };
+
+const getTypeColor = (type) => {
+    const typeColors = {
+      fire: "#fcb040",
+      water: "#4a90d9",
+      grass: "#7ac74c",
+      electric: "#f2d94e",
+      ice: "#aaf3f5",
+      fighting: "#eb6c2b",
+      poison: "#a040a1",
+      ground: "#e1c68c",
+      flying: "#a2b7e8",
+      psychic: "#f86c6b",
+      bug: "#a8b820",
+      rock: "#b5a476",
+      ghost: "#735797",
+      dragon: "#6c5cdd",
+      dark: "#6e6e6e",
+      steel: "#9ab1b1",
+      fairy: "#f4b3f4",
+      normal: "#a8a878",
+      unknown: "#a8a878", // Placeholder color for unknown types
+    };
+    return typeColors[type.toLowerCase()] || "#ccc"; // Default color for types not in the list
+  };
 
 export default Pokemon;

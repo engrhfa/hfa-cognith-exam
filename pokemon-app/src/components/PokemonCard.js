@@ -46,12 +46,10 @@ const PokemonCard = (props) => {
 
   return (
     <Card
-      sx={{ maxWidth: 345, backgroundColor: "#1e1e1e" }}
+      sx={{ width: 400, backgroundColor: "#1e1e1e" }}
       onClick={handleClick}
     >
-      <CardHeader
-        title={`#${formatId(pokemonData?.id)}`}
-      />
+      <CardHeader title={`#${formatId(pokemonData?.id)}`} />
       <div style={{ position: "relative", paddingTop: "100%" }}>
         <CardMedia
           component="img"
