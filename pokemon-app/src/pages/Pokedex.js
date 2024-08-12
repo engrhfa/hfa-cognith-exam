@@ -53,7 +53,7 @@ const Pokedex = () => {
       setOffset(0); // Reset offset for new search
       setHasMore(true); // Reset hasMore for new search
       fetchPokemonList(query, 0, true);
-    }, 300),
+    }, 200),
     []
   );
 
