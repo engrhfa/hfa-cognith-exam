@@ -1,24 +1,31 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://pokeapi.co/api/v2/';
+const BASE_URL = "https://pokeapi.co/api/v2/";
 
-const fetchPokemonList = (limit, offset) => {
-  const dataResp = axios.get(`${BASE_URL}pokemon?limit=${limit}&offset=${offset}`);
-  return dataResp;
+const fetchPokemonList = async (limit, offset, search) => {
+  try {
+    let url = `${BASE_URL}pokemon?limit=${limit}&offset=${offset}`;
+    let dataResp;
+    if (search !== "") {
+      url = `${BASE_URL}pokemon/${search}`;
+    }
+    dataResp = axios.get(url);
+    return dataResp;
+  } catch (error) {}
 };
 
-const fetchPokemonDetailsByUrl = (url) => {
-  const dataResp = axios.get(url);
-  return dataResp;
+const fetchPokemonDetailsByUrl = async (url) => {
+  try {
+    const dataResp = axios.get(url);
+    return dataResp;
+  } catch (error) {}
 };
 
-const fetchPokemonDetailsById = (id) => {
-  const dataResp = axios.get(`${BASE_URL}pokemon/${id}`);
-  return dataResp;
+const fetchPokemonDetailsById = async (id) => {
+  try {
+    const dataResp = axios.get(`${BASE_URL}pokemon/${id}`);
+    return dataResp;
+  } catch (error) {}
 };
 
-export {
-    fetchPokemonList,
-    fetchPokemonDetailsByUrl,
-    fetchPokemonDetailsById
-};
+export { fetchPokemonList, fetchPokemonDetailsByUrl, fetchPokemonDetailsById };

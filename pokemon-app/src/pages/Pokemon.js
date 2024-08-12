@@ -5,16 +5,15 @@ import {
   Grid,
   Card,
   CardMedia,
-  CardContent,
   Typography,
   Chip,
-  Tabs,
-  Tab,
   Paper,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import * as apiServices from "../utils/apiServices"; // Adjust the import based on your project structure
+import * as apiServices from "../utils/apiServices";
+import * as helper from "../utils/helper";
 
+//#region defined styles using mui system
 const PokemonCard = styled(Card)({
   backgroundColor: "#0f0f0f",
   maxWidth: 300,
@@ -32,9 +31,11 @@ const PokemonHeader = styled(Box)({
 
 const PokemonTypeChip = styled(Chip)(({ type }) => ({
   margin: "5px",
-  backgroundColor: getTypeColor(type),
-  fontWeight: 600
+  backgroundColor: helper.getTypeColor(type),
+  fontWeight: 600,
 }));
+
+//#endregion
 
 const Pokemon = () => {
   const { id } = useParams();
@@ -115,9 +116,11 @@ const Pokemon = () => {
               ))}
             </Box>
             {pokemonData?.stats.map((stat, index) => (
-              <Typography key={index} variant="body1" component="div">
-                {stat.stat.name.toUpperCase()}: {stat.base_stat}
-              </Typography>
+              <PokemonTypeChip
+                key={index}
+                type={"unknown"}
+                label={`${stat.stat.name.toUpperCase()}: ${stat.base_stat}`}
+              />
             ))}
             <br />
             <Typography variant="p" component="div" gutterBottom>
@@ -143,30 +146,5 @@ const Pokemon = () => {
     </Grid>
   );
 };
-
-const getTypeColor = (type) => {
-    const typeColors = {
-      fire: "#fcb040",
-      water: "#4a90d9",
-      grass: "#7ac74c",
-      electric: "#f2d94e",
-      ice: "#aaf3f5",
-      fighting: "#eb6c2b",
-      poison: "#a040a1",
-      ground: "#e1c68c",
-      flying: "#a2b7e8",
-      psychic: "#f86c6b",
-      bug: "#a8b820",
-      rock: "#b5a476",
-      ghost: "#735797",
-      dragon: "#6c5cdd",
-      dark: "#6e6e6e",
-      steel: "#9ab1b1",
-      fairy: "#f4b3f4",
-      normal: "#a8a878",
-      unknown: "#a8a878", // Placeholder color for unknown types
-    };
-    return typeColors[type.toLowerCase()] || "#ccc"; // Default color for types not in the list
-  };
 
 export default Pokemon;
