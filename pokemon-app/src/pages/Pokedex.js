@@ -26,7 +26,7 @@ const Pokedex = () => {
         search
       );
       const newPokemon = response?.data?.results || null;
-      console.log("Fetched Pokémon:", newPokemon);
+      //console.log("Fetched Pokémon:", newPokemon);
 
       if (response?.status === 404 || !newPokemon) {
         setPokedexList([]);
@@ -168,11 +168,6 @@ const Pokedex = () => {
       {loading && (
         <div style={{ color: "#fff", textAlign: "center", width: "100%" }}>
           Loading more Pokémon...
-        </div>
-      )}
-      {!hasMore && (
-        <div style={{ color: "#fff", textAlign: "center", width: "100%" }}>
-          No more Pokémon to load.
         </div>
       )}
     </Grid>
